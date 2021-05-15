@@ -1,0 +1,23 @@
+{
+  "name": "merng-server",
+  "version": "0.1.0",
+  "description": "template for MERNG server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "NODE_ENV=development node index.js"
+  },
+  "author": "Rome Canete",
+  "license": "MIT",
+  "dependencies": {
+    "apollo-server": "^2.24.0",
+    "apollo-server-express": "^2.24.0",
+    "bcryptjs": "^2.4.3",
+    "graphql": "^15.5.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.12.8"
+  },
+  "devDependencies": {
+    "dotenv": "^9.0.2"
+  }
+}
