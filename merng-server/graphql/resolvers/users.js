@@ -32,13 +32,19 @@ module.exports = {
             }
         },
 
-        getUser: async (_, { userId }) => {
+        getUser: async (_, { userId }, context) => {
+            const user = checkAuth(context);
             try {
-                const user = await User.findOne({ _id: userId });
-                if (user) {
-                    return user;
+                const userData = User.findById(user.id);
+                if (userData) {
+                    const userFromDb = await User.findOne({ _id: userId });
+                    if (userFromDb) {
+                        return userFromDb;
+                    } else {
+                        throw new Error('User not found!');
+                    }
                 } else {
-                    throw new Error('User not found!');
+                    throw AuthenticationError("Token is invalid!");
                 }
             } catch (error) {
                 throw new Error(error);
