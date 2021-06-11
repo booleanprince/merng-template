@@ -1,6 +1,8 @@
 const User = require('../../models/User');
 const { hash, compare } = require('bcryptjs');
 const sign = require('jsonwebtoken/sign');
+const checkAuth = require('../../utilities/auth');
+
 const { UserInputError, AuthenticationError } = require('apollo-server-errors');
 
 const generateToken = (dbObject) => {
@@ -15,10 +17,16 @@ const generateToken = (dbObject) => {
 
 module.exports = {
     Query: {
-        getUsers: async () => {
+        getUsers: async (_, { }, context) => {
+            const user = checkAuth(context);
             try {
-                const userList = await User.find().sort({ createdAt: -1 });
-                return userList;
+                const userData = User.findById(user.id);
+                if (userData) {
+                    const userList = await User.find().sort({ createdAt: -1 });
+                    return userList;
+                } else {
+                    throw AuthenticationError("Token is invalid!");
+                }
             } catch (error) {
                 throw new Error(error);
             }
